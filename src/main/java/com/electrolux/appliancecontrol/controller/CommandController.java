@@ -26,7 +26,7 @@ public class CommandController {
     }
 
     @GetMapping("/appliance/{applianceId}/command")
-    public CommandRequestResponse getCommand(@PathVariable UUID applianceId) {
+    public CommandRequestResponse fetchCommand(@PathVariable UUID applianceId) {
         return new CommandRequestResponse(commandService.fetchCommand(applianceId));
     }
 }

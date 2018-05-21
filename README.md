@@ -35,7 +35,7 @@ This is a small implementation of appliance control backend.
 
 ## API methods
 
-###1. POST /appliance (register an appliance)
+### 1. POST /appliance (register an appliance)
 
 Description:
 
@@ -109,6 +109,66 @@ Request:
 Response:
 HTTP CODE 200
 
+## Example (using curl)
+
+
+### 1. Register appliance
+
+curl 'http://localhost:8080/appliance' -H 'content-type: application/json' --data-binary $'{ "type": "WASH_MACHINE"}' 
+
+Response: 
+```
+{"applianceId":"86079278-5062-4135-a398-16d29a152082"}% 
+```
+
+### 2. Get initial status of appliance
+
+curl http://localhost:8080/appliance/86079278-5062-4135-a398-16d29a152082/status 
+
+Response:
+```
+{"status":"READY"}
+```
+
+### 3. Send command (User)
+
+curl 'http://localhost:8080/appliance/86079278-5062-4135-a398-16d29a152082/command' -H 'content-type: application/json' --data-binary $'{ "command": "WASH"}'
+Response: 200 
+
+
+### 4. Fetch command (Appliance)
+
+curl 'http://localhost:8080/appliance/86079278-5062-4135-a398-16d29a152082/command' 
+
+Response:
+```
+{"command":"WASH"}
+```
+
+### 5. Fetch status of the appliance calculated by state machine
+
+curl 'http://localhost:8080/appliance/86079278-5062-4135-a398-16d29a152082/status'  
+
+Response:
+```
+{"status":"WASHING"}
+```
+
+### 6. Update status to ready when wash is finished
+
+curl -XPUT 'http://localhost:8080/appliance/73d1d66c-7015-4e15-86b2-0b07d95c6e4c/status' -H 'content-type: application/json' --data-binary $'{ "status": "READY"}' 
+
+Response: 200
+
+### 7. Get status of the appliance after status update
+
+curl 'http://localhost:8080/appliance/73d1d66c-7015-4e15-86b2-0b07d95c6e4c/status'                                                                           
+
+Response:
+```
+{"status":"READY"} 
+
+```
 
 ## Author
 
